@@ -1,7 +1,7 @@
 {
-  "name": "@fission-ai/openspec",
-  "version": "0.14.0",
-  "description": "AI-native system for spec-driven development",
+  "name": "@haoruiyyyu/openspec",
+  "version": "0.14.1",
+  "description": "OpenSpec fork with fixes for #269 (gitkeep) and #243 (non-English validation) - AI-native system for spec-driven development",
   "keywords": [
     "openspec",
     "specs",

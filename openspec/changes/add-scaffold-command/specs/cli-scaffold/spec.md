@@ -9,12 +9,13 @@ The CLI SHALL expose an `openspec scaffold <change-id>` command that validates t
 - **AND** exit with code 0 after successful scaffolding
 
 ### Requirement: Change Directory Structure
-The scaffold command SHALL create the standard change workspace with proposal, tasks, optional design, and delta directories laid out according to OpenSpec conventions.
+The scaffold command SHALL create the standard change workspace with proposal, tasks, design, and delta directories laid out according to OpenSpec conventions.
 
 #### Scenario: Generating change workspace
 - **WHEN** scaffolding a new change with id `add-user-notifications`
 - **THEN** create `openspec/changes/add-user-notifications/`
-- **AND** generate `proposal.md`, `tasks.md`, and `design.md` (commented placeholder content) in that directory when missing
+- **AND** generate `proposal.md` and `tasks.md` with OpenSpec-compliant templates
+- **AND** always generate `design.md` with TODO comments explaining when to use it and when to delete it
 - **AND** create `openspec/changes/add-user-notifications/specs/` ready for capability-specific deltas
 
 ### Requirement: Template Content Guidance
@@ -26,14 +27,28 @@ The scaffold command SHALL populate generated Markdown files with OpenSpec-compl
 - **AND** ensure `tasks.md` starts with `## 1. Implementation` and numbered checklist items using `- [ ]` syntax
 - **AND** annotate optional sections (like `design.md`) with inline TODO comments so users understand when to keep or delete them
 
+### Requirement: Interactive Capability Input
+The scaffold command SHALL prompt the user interactively to specify capability names for spec deltas, allowing dynamic customization based on the change scope.
+
+#### Scenario: Prompting for capability names
+- **GIVEN** the user has run `openspec scaffold add-user-notifications`
+- **WHEN** the command prompts for capability input
+- **THEN** display an interactive prompt asking "Enter capability names (comma-separated, or press Enter to skip):"
+- **AND** accept multiple capability names separated by commas (e.g., "api-notifications, ui-alerts")
+- **AND** validate each capability name follows kebab-case format
+- **AND** allow the user to skip by pressing Enter, which creates no spec deltas
+
 ### Requirement: Delta Spec Creation
-The scaffold command SHALL create at least one capability delta file with correctly formatted requirement and scenario placeholders that guide authors to enter the actual behavior.
+The scaffold command SHALL create capability delta files with correctly formatted requirement and scenario placeholders that guide authors to enter the actual behavior.
 
 #### Scenario: Creating spec delta skeleton
-- **WHEN** scaffolding a change and the capability `cli-scaffold` is provided interactively or via flags
-- **THEN** generate `openspec/changes/add-user-notifications/specs/cli-scaffold/spec.md`
-- **AND** include `## ADDED Requirements` with at least one `### Requirement:` block and matching `#### Scenario:` entries that remind the author to replace placeholder text
-- **AND** ensure the generated delta passes `openspec validate add-user-notifications --strict` until the author edits it
+- **WHEN** the user provides capability names `api-notifications, ui-alerts`
+- **THEN** generate `openspec/changes/add-user-notifications/specs/api-notifications/spec.md`
+- **AND** generate `openspec/changes/add-user-notifications/specs/ui-alerts/spec.md`
+- **AND** each spec file SHALL include `## ADDED Requirements` with placeholder `### Requirement:` blocks
+- **AND** each requirement SHALL have a matching `#### Scenario:` with GIVEN/WHEN/THEN template
+- **AND** include inline comments reminding authors to replace placeholder text
+- **AND** ensure the generated delta passes `openspec validate add-user-notifications --strict` before user edits
 
 ### Requirement: Idempotent Execution
 The scaffold command SHALL be safe to rerun, preserving user edits while filling in any missing managed sections.

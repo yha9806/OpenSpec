@@ -13,6 +13,7 @@ import { registerSpecCommand } from '../commands/spec.js';
 import { ChangeCommand } from '../commands/change.js';
 import { ValidateCommand } from '../commands/validate.js';
 import { ShowCommand } from '../commands/show.js';
+import { ScaffoldCommand } from '../commands/scaffold.js';
 
 const program = new Command();
 const require = createRequire(import.meta.url);
@@ -178,6 +179,20 @@ changeCmd
     } catch (error) {
       console.error(`Error: ${(error as Error).message}`);
       process.exitCode = 1;
+    }
+  });
+
+program
+  .command('scaffold <change-id>')
+  .description('Generate a change proposal template with interactive capability selection')
+  .action(async (changeId: string) => {
+    try {
+      const scaffoldCommand = new ScaffoldCommand();
+      await scaffoldCommand.execute(changeId, '.');
+    } catch (error) {
+      console.log(); // Empty line for spacing
+      ora().fail(`Error: ${(error as Error).message}`);
+      process.exit(1);
     }
   });
 

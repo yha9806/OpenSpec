@@ -10,7 +10,7 @@
 </p>
 <p align="center">Spec-driven development for AI coding assistants.</p>
 
-> **Note:** This is a temporary bug-fix fork of [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec). Fixes for [Issue #269](https://github.com/Fission-AI/OpenSpec/issues/269) and [Issue #243](https://github.com/Fission-AI/OpenSpec/issues/243) are available here while awaiting upstream review. Install: `npm install -g @haoruiyyyu/openspec@0.14.2`
+> **Note:** This is a temporary enhancement fork of [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec). Includes scaffold command and fixes for [Issue #269](https://github.com/Fission-AI/OpenSpec/issues/269) and [Issue #243](https://github.com/Fission-AI/OpenSpec/issues/243) while awaiting upstream review. Install: `npm install -g @haoruiyyyu/openspec@0.14.3`
 
 <p align="center">
   <a href="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml"><img alt="CI (upstream)" src="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml/badge.svg" /></a>
@@ -175,8 +175,9 @@ Use `openspec/project.md` to define project-level conventions, standards, archit
 Here's a real example showing the complete OpenSpec workflow. This works with any AI tool. Those with native slash commands will recognize the shortcuts automatically.
 
 #### 1. Draft the Proposal
-Start by asking your AI to create a change proposal:
+Start by asking your AI to create a change proposal, or use the scaffold command directly:
 
+**Using AI assistant (with slash commands):**
 ```text
 You: Create an OpenSpec change proposal for adding profile search filters by role and team
      (Shortcut for tools with slash commands: /openspec:proposal Add profile search filters)
@@ -184,6 +185,33 @@ You: Create an OpenSpec change proposal for adding profile search filters by rol
 AI:  I'll create an OpenSpec change proposal for profile filters.
      *Scaffolds openspec/changes/add-profile-filters/ with proposal.md, tasks.md, spec deltas.*
 ```
+
+**Using CLI directly:**
+```bash
+$ openspec scaffold add-profile-filters
+? Enter capability names (comma-separated, or press Enter to skip): profile, search
+
+✔ Created change directory structure
+✔ Scaffolded change: add-profile-filters
+
+  Files created:
+    ✓ proposal.md
+    ✓ tasks.md
+    ✓ design.md
+    ✓ specs/profile/spec.md
+    ✓ specs/search/spec.md
+
+  Next steps:
+    1. Edit add-profile-filters/proposal.md to describe your change
+    2. Break down work in add-profile-filters/tasks.md
+    3. Run: openspec validate add-profile-filters --strict
+```
+
+The `scaffold` command generates change templates with:
+- **proposal.md**: Why/What/Impact structure
+- **tasks.md**: Implementation checklist
+- **design.md**: Optional technical decisions (with usage guidance)
+- **specs/**: Delta spec templates for each capability (ADDED Requirements structure)
 
 #### 2. Verify & Review
 Check that the change was created correctly and review the proposal:

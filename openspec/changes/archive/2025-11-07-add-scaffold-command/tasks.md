@@ -19,5 +19,5 @@
 - [x] 3.5 Add integration test ensuring generated deltas pass `openspec validate --strict`.
 
 ## 4. Documentation
-- [ ] 4.1 Update `openspec/AGENTS.md` with scaffold command usage examples.
-- [ ] 4.2 Update README to mention scaffold workflow.
+- [x] 4.1 Update `openspec/AGENTS.md` with scaffold command usage examples.
+- [x] 4.2 Update README to mention scaffold workflow.

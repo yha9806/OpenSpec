@@ -7,7 +7,7 @@ Instructions for AI coding assistants using OpenSpec for spec-driven development
 - Search existing work: `openspec spec list --long`, `openspec list` (use `rg` only for full-text search)
 - Decide scope: new capability vs modify existing capability
 - Pick a unique `change-id`: kebab-case, verb-led (`add-`, `update-`, `remove-`, `refactor-`)
-- Scaffold: `proposal.md`, `tasks.md`, `design.md` (only if needed), and delta specs per affected capability
+- Scaffold: `openspec scaffold <change-id>` generates templates for `proposal.md`, `tasks.md`, `design.md`, and delta specs
 - Write deltas: use `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; include at least one `#### Scenario:` per requirement
 - Validate: `openspec validate [change-id] --strict` and fix issues
 - Request approval: Do not start implementation until proposal is approved
@@ -42,8 +42,14 @@ Skip proposal for:
 
 **Workflow**
 1. Review `openspec/project.md`, `openspec list`, and `openspec list --specs` to understand current context.
-2. Choose a unique verb-led `change-id` and scaffold `proposal.md`, `tasks.md`, optional `design.md`, and spec deltas under `openspec/changes/<id>/`.
-3. Draft spec deltas using `## ADDED|MODIFIED|REMOVED Requirements` with at least one `#### Scenario:` per requirement.
+2. Choose a unique verb-led `change-id` and run `openspec scaffold <change-id>` to generate template files:
+   - Enter capability names (comma-separated, kebab-case) when prompted
+   - The command generates `proposal.md`, `tasks.md`, `design.md`, and spec delta templates under `openspec/changes/<id>/`
+   - Existing files are preserved (idempotent operation)
+3. Fill in the generated templates:
+   - Edit `proposal.md` with Why/What/Impact details
+   - Break down work in `tasks.md` checklist
+   - Complete spec deltas using `## ADDED|MODIFIED|REMOVED Requirements` with at least one `#### Scenario:` per requirement
 4. Run `openspec validate <id> --strict` and resolve any issues before sharing the proposal.
 
 ### Stage 2: Implementing Changes
@@ -101,6 +107,7 @@ openspec archive <change-id> [--yes|-y]   # Archive after deployment (add --yes 
 # Project management
 openspec init [path]           # Initialize OpenSpec
 openspec update [path]         # Update instruction files
+openspec scaffold <change-id>  # Generate change template with interactive capability selection
 
 # Interactive mode
 openspec show                  # Prompts for selection
